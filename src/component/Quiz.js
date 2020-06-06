@@ -34,15 +34,7 @@ const QuizComponent = () => {
   const [state, setState] = useState({
     currentQuestion: 0,
     score: 0, 
-    chosenAnswer: ''
   })
-
-  const handleAnswer = (value) => {
-    setState(prevState => ({
-      ...prevState, 
-      chosenAnswer: value
-    }))
-  }
 
   const checkAnswer = (chosenAnswer, correctAnswer) => {
     // if(chosenAnswer === ''){
@@ -54,7 +46,6 @@ const QuizComponent = () => {
         ...prevState, 
         currentQuestion: prevState.currentQuestion + 1, 
         score: prevState.score + 1,
-        chosenAnswer: ''
       }));
       return alert("Correct");
   
@@ -62,7 +53,6 @@ const QuizComponent = () => {
       setState(prevState => ({
         ...prevState, 
         currentQuestion: prevState.currentQuestion + 1, 
-        chosenAnswer: ''
       }))
       return alert("Incorrect");
     }
@@ -73,7 +63,6 @@ const QuizComponent = () => {
       ...prevState, 
       currentQuestion: 0, 
       score: 0 ,
-      chosenAnswer: ''
     }));
   }
 
@@ -96,7 +85,6 @@ const QuizComponent = () => {
                   value = {answer}
                   id = {answer.id}
                   onClick = {e => {
-                    handleAnswer(e.target.value);
                     checkAnswer(e.target.value, questions[state.currentQuestion].correct_answer)
                   }}
                 >
@@ -104,12 +92,6 @@ const QuizComponent = () => {
                 </button>
               ))}
             </ul>
-            {/* <button 
-              onClick = {
-                () => checkAnswer(state.chosenAnswer, questions[state.currentQuestion].correct_answer)
-              }>
-              Next
-            </button> */}
           </div>
         </>
       ): 
