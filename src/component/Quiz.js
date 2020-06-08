@@ -5,8 +5,8 @@ const questions = [
     img: "https://i.imgur.com/hAd5IM3.png",
     question:
       "Compute the depth of the stress block, a. Assume that the tension steel is yielding.",
-    answer: [{text: "135mm", id: 1}, {text: "136mm", id: 2} , {text: "137mm", id: 3}, {text: "138mm", id: 4}],
-    correctAnswer: {text: "137mm", id: 1},
+    answer: ["135mm",  "136mm",  "137mm",   "138mm"],
+    correctAnswer:  "137mm",
     id: "099099",
     solution: "Please see link"
   },
@@ -14,8 +14,8 @@ const questions = [
     img: "https://i.imgur.com/hAd5IM3.png",
     question:
       'Check if tension steel yields',
-    answer: [{text: "True", id: 1}, {text: "False", id: 2}, {text: "N/A", id: 3}, {text: "All of the Above", id: 4}],
-    correctAnswer: {text: "True", id: 1},
+    answer: [ "True",  "False",  "N/A",   "All of the Above"],
+    correctAnswer:  "True",
     id: "183452",
     solution: "Please see link"
   },
@@ -23,8 +23,8 @@ const questions = [
     img: "https://i.imgur.com/hAd5IM3.png",
     question:
       "Compute the Nominal Moment Strength",
-    answer: [{text: "262 kN-m", id: 1}, {text: "263 kN-m", id: 2}, {text: "264 kN-m", id: 3}, {text: "265kN-m", id: 4}],
-    correctAnswer: {text: "263 kN-m", id: 1},
+    answer: [ "262 kN-m",  "263 kN-m",  "264 kN-m",   "265kN-m"],
+    correctAnswer:  "263 kN-m",
     id: "267908", 
     solution: "Please see link"
   },
@@ -35,26 +35,27 @@ const QuizComponent = () => {
     currentQuestion: 0,
     score: 0, 
     selectedId: '',
-    answerCorrect: false,
-    answered: false
+    answerIsCorrect: false,
+    isAnswered: false,
+    correctAnswer: ''
   })
 
-  const handleId = (id) => {
+  const handleAnswer = (id, correctAnswer) => {
     setState(prevState => ({
       ...prevState, 
-      selectedId: id
+      selectedId: id,
+      correctAnswer
     }))
   }
-
-  console.log(state.selectedId, state.answerCorrect);
 
   const nextQuestion = () => {
     setState(prevState => ({
       ...prevState, 
       currentQuestion: prevState.currentQuestion + 1, 
-      answerCorrect: false,
-      answered: false,
-      selectedId: ''
+      answerIsCorrect: false,
+      isAnswered: false,
+      selectedId: '',
+      correctAnswer: ''
     }));
   }
  
@@ -63,8 +64,8 @@ const QuizComponent = () => {
       setState(prevState => ({
         ...prevState, 
         score: prevState.score + 1,
-        answerCorrect: true,
-        answered: true,
+        answerIsCorrect: true,
+        isAnswered: true,
       }), 
       setTimeout(() => nextQuestion(), 1100)
       );
@@ -72,7 +73,7 @@ const QuizComponent = () => {
     } else if (chosenAnswer !== correctAnswer){
       setState(prevState => ({
         ...prevState, 
-        answered: false,
+        isAnswered: true,
       }), 
       setTimeout(() => nextQuestion(), 1100)
       );
@@ -85,7 +86,7 @@ const QuizComponent = () => {
       currentQuestion: 0, 
       score: 0,
       selectedId: '',
-      answerCorrect: false,
+      answerIsCorrect: false,
     }));
   }
 
@@ -105,21 +106,22 @@ const QuizComponent = () => {
               {questions[state.currentQuestion].answer.map((answer, index) => (
                 <button 
                   key={index}
-                  id = {answer.id}
-                  value = {answer.text}
+                  id = {answer}
+                  value = {answer}
                   onClick = {e => {
-                    handleId(answer.id)
-                    checkAnswer(e.target.value, questions[state.currentQuestion].correctAnswer.text)
+                    handleAnswer(answer, questions[state.currentQuestion].correctAnswer)
+                    checkAnswer(e.target.value, questions[state.currentQuestion].correctAnswer)
                   }}
                   className = {
-                    answer.id === state.selectedId && state.answerCorrect ? 
+                    answer === state.selectedId && state.answerIsCorrect ? 
                     'btnCorrect' : 
-                   answer.id === state.selectedId && state.answerCorrect === false ?
+                   answer === state.selectedId && state.answerIsCorrect === false ?
                      'btnWrong' : 
+                     answer === state.correctAnswer && state.isAnswered ? 'btnCorrect' :
                     'btnDefault'
-                  }
+                  }  
                 >
-                  {String.fromCharCode(index + 65)}. {answer.text}
+                  {String.fromCharCode(index + 65)}. {answer}
                 </button>
               ))}
             </ul>
