@@ -3,10 +3,14 @@ button {
   background-color: blue;
 }
 
-.buttonTrue {
-  background-color: blue;
+.btnCorrect {
+  background-color: green;
 }
 
-.buttonFalse {
-  background-color: green;
+.btnWrong {
+  background-color: red;
+}
+
+.btnDefault {
+  background-color: blue;
 }
