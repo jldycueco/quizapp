@@ -1,16 +1,28 @@
 button {
-  color: white;
-  background-color: blue;
+  color: black;
+  padding: 20px 15px;
+  border: 2px solid #eee;
+  border-radius: 5px;
+  margin: 5px 20px;
+  font-size: 18px;
+  background-color: #eee;
+  cursor: pointer;
+  outline: none;
 }
 
-.btnCorrect {
-  background-color: green;
+.appMain {
+  background-color: #fff;
+  margin: 10px auto 0;
+  max-width: 800px;
+  padding: 20px 0;
+  border-radius: 5px;
+  position: relative;
 }
 
-.btnWrong {
-  background-color: red;
+@media (max-width: 850px){
+  .App-main {
+    width: 90%;
+  }
 }
 
-.btnDefault {
-  background-color: blue;
-}
+

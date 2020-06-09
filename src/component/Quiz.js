@@ -5,12 +5,13 @@ import {
   nextQuestion, 
   handleCorrectAnswer, 
   handleWrongAnswer, 
-  resetQuiz
 } from '../action/quizActions';
+
+import styles from './styles.module.css';
+import Result from './Result';
 
 const questions = [
   {
-    img: "https://i.imgur.com/hAd5IM3.png",
     question:
       "Compute the depth of the stress block, a. Assume that the tension steel is yielding.",
     answer: ["135mm",  "136mm",  "137mm",   "138mm"],
@@ -19,7 +20,6 @@ const questions = [
     solution: "Please see link"
   },
   {
-    img: "https://i.imgur.com/hAd5IM3.png",
     question:
       'Check if tension steel yields',
     answer: [ "True",  "False",  "N/A",   "All of the Above"],
@@ -28,7 +28,6 @@ const questions = [
     solution: "Please see link"
   },
   {
-    img: "https://i.imgur.com/hAd5IM3.png",
     question:
       "Compute the Nominal Moment Strength",
     answer: [ "262 kN-m",  "263 kN-m",  "264 kN-m",   "265kN-m"],
@@ -53,18 +52,17 @@ const QuizComponent = () => {
     }
 
   return (
-    <>
+    <main className='appMain'>
       {state.currentQuestion < questions.length ? (
         <>
-          <div>Your Score is {state.score}/{questions.length}</div>
-          <div>Question {state.currentQuestion + 1}</div>
-          <div>
-            <p>{questions[state.currentQuestion].question}</p>
-            <img 
-              src={questions[state.currentQuestion].img} 
-              alt={questions[state.currentQuestion].img}
-            />
-            <ul>
+          <div className = {styles.questionCount}>
+            Question {state.currentQuestion + 1}
+            <div className={styles.spacer} />
+            Score: {state.score}/{questions.length}
+          </div>
+          <div className = {styles.quizContainer}>
+            <p className = {styles.questionText}>{questions[state.currentQuestion].question}</p>
+            <ul className = {styles.answerContainer}>
               {questions[state.currentQuestion].answer.map((answer, index) => (
                 <button 
                   key={index}
@@ -76,11 +74,11 @@ const QuizComponent = () => {
                   }}
                   className = {
                     answer === state.selectedId && state.answerIsCorrect ? 
-                    'btnCorrect' : 
+                    styles.btnCorrect : 
                    answer === state.selectedId && state.answerIsCorrect === false ?
-                     'btnWrong' : 
-                     answer === state.correctAnswer && state.isAnswered ? 'btnCorrect' :
-                    'btnDefault'
+                     styles.btnWrong : 
+                     answer === state.correctAnswer && state.isAnswered ? styles.btnCorrect :
+                    styles.btnDefault
                   }  
                 >
                   {String.fromCharCode(index + 65)}. {answer}
@@ -89,12 +87,9 @@ const QuizComponent = () => {
             </ul>
           </div>
         </>
-      ): 
-      <div>
-        <button onClick= {() => resetQuiz(dispatch)}>Retry</button>
-      </div>
+      ): <Result length = {questions.length}/>              
       }
-    </>
+    </main>
   );
 }
 

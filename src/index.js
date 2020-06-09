@@ -3,10 +3,16 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
+import PhaseContextProvider from './context/phaseContext';
+import QuizContextProvider from './context/quizContext';
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <PhaseContextProvider>
+      <QuizContextProvider>
+        <App />
+      </QuizContextProvider>
+    </PhaseContextProvider>
   </React.StrictMode>,
   document.getElementById('root')
 );
