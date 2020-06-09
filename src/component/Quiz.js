@@ -1,4 +1,12 @@
-import React, { useState } from 'react';
+import React, { useContext } from 'react';
+import { QuizContext } from '../context/quizContext';
+import { 
+  saveAnswer, 
+  nextQuestion, 
+  handleCorrectAnswer, 
+  handleWrongAnswer, 
+  resetQuiz
+} from '../action/quizActions';
 
 const questions = [
   {
@@ -31,64 +39,18 @@ const questions = [
 ];
 
 const QuizComponent = () => {
-  const [state, setState] = useState({
-    currentQuestion: 0,
-    score: 0, 
-    selectedId: '',
-    answerIsCorrect: false,
-    isAnswered: false,
-    correctAnswer: ''
-  })
+  const { state, dispatch } = useContext(QuizContext);
 
-  const handleAnswer = (id, correctAnswer) => {
-    setState(prevState => ({
-      ...prevState, 
-      selectedId: id,
-      correctAnswer
-    }))
-  }
-
-  const nextQuestion = () => {
-    setState(prevState => ({
-      ...prevState, 
-      currentQuestion: prevState.currentQuestion + 1, 
-      answerIsCorrect: false,
-      isAnswered: false,
-      selectedId: '',
-      correctAnswer: ''
-    }));
-  }
- 
   const checkAnswer = (chosenAnswer, correctAnswer) => {
-    if (chosenAnswer === correctAnswer){
-      setState(prevState => ({
-        ...prevState, 
-        score: prevState.score + 1,
-        answerIsCorrect: true,
-        isAnswered: true,
-      }), 
-      setTimeout(() => nextQuestion(), 1100)
-      );
-  
-    } else if (chosenAnswer !== correctAnswer){
-      setState(prevState => ({
-        ...prevState, 
-        isAnswered: true,
-      }), 
-      setTimeout(() => nextQuestion(), 1100)
-      );
+      if (chosenAnswer === correctAnswer){
+        handleCorrectAnswer(dispatch);
+        setTimeout(() => nextQuestion(dispatch), 1000)
+    
+      } else if (chosenAnswer !== correctAnswer){
+        handleWrongAnswer(dispatch);
+        setTimeout(() => nextQuestion(dispatch), 1000)
+      }
     }
-  }
-
-  const Reset = () => {
-    setState(prevState => ({
-      ...prevState, 
-      currentQuestion: 0, 
-      score: 0,
-      selectedId: '',
-      answerIsCorrect: false,
-    }));
-  }
 
   return (
     <>
@@ -109,7 +71,7 @@ const QuizComponent = () => {
                   id = {answer}
                   value = {answer}
                   onClick = {e => {
-                    handleAnswer(answer, questions[state.currentQuestion].correctAnswer)
+                    saveAnswer(dispatch, answer, questions[state.currentQuestion].correctAnswer)
                     checkAnswer(e.target.value, questions[state.currentQuestion].correctAnswer)
                   }}
                   className = {
@@ -129,7 +91,7 @@ const QuizComponent = () => {
         </>
       ): 
       <div>
-        <button onClick= {() => Reset()}>Retry</button>
+        <button onClick= {() => resetQuiz(dispatch)}>Retry</button>
       </div>
       }
     </>
