@@ -12,9 +12,9 @@ const quizReducer = (state, action) => {
       return {
         ...state, 
         currentQuestion: state.currentQuestion + 1, 
+        selectedId: '',
         answerIsCorrect: false,
         isAnswered: false,
-        selectedId: '',
         correctAnswer: ''
       }
     case RESET_QUIZ: 
@@ -24,6 +24,8 @@ const quizReducer = (state, action) => {
         score: 0,
         selectedId: '',
         answerIsCorrect: false,
+        isAnswered: false,
+        correctAnswer: '',
       }
     case SAVE_ANSWER: 
       return {
