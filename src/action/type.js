@@ -5,3 +5,4 @@ export const CORRECT_ANSWER = 'CORRECT_ANSWER';
 export const WRONG_ANSWER = 'WRONG_ANSWER';
 export const WELCOME_PHASE = 'WELCOME_PHASE';
 export const QUIZ_PHASE = 'QUIZ_PHASE';
+export const QUIZ_LENGTH = 'QUIZ_LENGTH';

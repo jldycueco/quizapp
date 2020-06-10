@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
 import { QuizContext } from '../context/quizContext';
+import { PhaseContext } from '../context/phaseContext';
 import { 
   saveAnswer, 
   nextQuestion, 
@@ -9,56 +10,35 @@ import {
 
 import styles from './styles.module.css';
 import Result from './Result';
+import questionsArray from '../data/Questions';
+import shuffle from '../utils/shuffleArray';
 
-const questions = [
-  {
-    question:
-      "Compute the depth of the stress block, a. Assume that the tension steel is yielding.",
-    answer: ["135mm",  "136mm",  "137mm",   "138mm"],
-    correctAnswer:  "137mm",
-    id: "099099",
-    solution: "Please see link"
-  },
-  {
-    question:
-      'Check if tension steel yields',
-    answer: [ "True",  "False",  "N/A",   "All of the Above"],
-    correctAnswer:  "True",
-    id: "183452",
-    solution: "Please see link"
-  },
-  {
-    question:
-      "Compute the Nominal Moment Strength",
-    answer: [ "262 kN-m",  "263 kN-m",  "264 kN-m",   "265kN-m"],
-    correctAnswer:  "263 kN-m",
-    id: "267908", 
-    solution: "Please see link"
-  },
-];
+
+const questions = shuffle(questionsArray);
 
 const QuizComponent = () => {
   const { state, dispatch } = useContext(QuizContext);
+  const { length } = useContext(PhaseContext);
 
   const checkAnswer = (chosenAnswer, correctAnswer) => {
-      if (chosenAnswer === correctAnswer){
-        handleCorrectAnswer(dispatch);
-        setTimeout(() => nextQuestion(dispatch), 1000)
-    
-      } else if (chosenAnswer !== correctAnswer){
-        handleWrongAnswer(dispatch);
-        setTimeout(() => nextQuestion(dispatch), 1000)
-      }
+    if (chosenAnswer === correctAnswer){
+      handleCorrectAnswer(dispatch);
+      setTimeout(() => nextQuestion(dispatch), 1000)
+  
+    } else if (chosenAnswer !== correctAnswer){
+      handleWrongAnswer(dispatch);
+      setTimeout(() => nextQuestion(dispatch), 1000)
     }
+  }
 
   return (
     <main className='appMain'>
-      {state.currentQuestion < questions.length ? (
+      {state.currentQuestion < length ? (
         <>
           <div className = {styles.questionCount}>
             Question {state.currentQuestion + 1}
             <div className={styles.spacer} />
-            Score: {state.score}/{questions.length}
+            Score: {state.score}/{length}
           </div>
           <div className = {styles.quizContainer}>
             <p className = {styles.questionText}>{questions[state.currentQuestion].question}</p>
@@ -87,7 +67,7 @@ const QuizComponent = () => {
             </ul>
           </div>
         </>
-      ): <Result length = {questions.length}/>              
+      ): <Result length = {length}/>              
       }
     </main>
   );

@@ -6,6 +6,7 @@ export const PhaseContext = createContext();
 const PhaseContextProvider = ({children}) => {
   const initialState = {
     phase: 'Welcome',
+    questionLength: 5,
   }
 
   const [state, phaseDispatch] = useReducer(phaseReducer, initialState);
@@ -13,6 +14,7 @@ const PhaseContextProvider = ({children}) => {
   return ( 
     <PhaseContext.Provider value = {{
       phase: state.phase, 
+      length: state.questionLength,
       phaseDispatch
     }}>
       {children}

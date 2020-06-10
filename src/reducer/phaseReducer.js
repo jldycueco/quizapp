@@ -1,6 +1,7 @@
 import {
   WELCOME_PHASE,
   QUIZ_PHASE, 
+  QUIZ_LENGTH,
   } from '../action/type';
 
 const phaseReducer = (state, action) => {
@@ -8,13 +9,18 @@ const phaseReducer = (state, action) => {
     case WELCOME_PHASE: 
       return {
         ...state,
-        phase: action.payload,
+        phase: action.payload,   
       }
     case QUIZ_PHASE: 
       return {
         ...state,
         phase: action.payload,
       }
+    case QUIZ_LENGTH: 
+      return {
+        ...state,
+        questionLength: action.payload,
+      } 
     default:
       return state;
   }
